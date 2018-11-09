@@ -17,7 +17,8 @@ public class BookingTest {
 	
 	@Test
 	public void testRichiede() {
-		List<Interval> listaPren = new ArrayList<>();
+		List<Prenotazione> listaPren = new ArrayList<>();
+		
 		Risorsa risorsa = new Macchina(listaPren);
 		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
 		DateTime fine = new DateTime(2018, 12, 25, 9, 0);
@@ -26,7 +27,7 @@ public class BookingTest {
 		DateTime inizio3 = new DateTime(2018,12,25,10,0);
 		DateTime fine3 = new DateTime(2018,12,25,12,0);
 		
-		boolean prenotazioneEffettuata = risorsa.addPrenotazione(inizio,fine);
+		boolean prenotazioneEffettuata = risorsa.addPrenotazione("pippo",inizio,fine);
 		
 		boolean disponibilità = risorsa.getDisponibilità(inizio,fine);
 		boolean disponibilità2 = risorsa.getDisponibilità(inizio2, fine2);
@@ -37,12 +38,21 @@ public class BookingTest {
 		assertEquals("La risorsa è disponibile in quella data", false, disponibilità2);
 		assertEquals("La risorsa è disponibile in quella data", true, disponibilità3);
 		
-		boolean prenotazioneEffettuata2 = risorsa.addPrenotazione(inizio2, fine2);
+		boolean prenotazioneEffettuata2 = risorsa.addPrenotazione("pippo2",inizio2, fine2);
 		//ASSERT FIRST
-		assertEquals("La risorsa è stata aggiunta", true, prenotazioneEffettuata);
+		assertEquals("La prenotazione è stata aggiunta", true, prenotazioneEffettuata);
 		//TRIANGULATE
-		assertEquals("La risorsa non è stata aggiunta, esito false", false, prenotazioneEffettuata2);
+		assertEquals("La prenotazione non è stata aggiunta, esito false", false, prenotazioneEffettuata2);
 		
+		boolean prenotazioneRimossa = risorsa.removePrenotazione("pippo");
+		boolean prenotazioneRimossa2 = risorsa.removePrenotazione("pluto");
+		
+		//ASSERT FIRST
+		assertEquals("La prenotazione è stata rimossa", true, prenotazioneRimossa);
+		//TRIANGULATE
+		assertEquals("La prenotazione non è stata rimossa, esito false", false, prenotazioneRimossa2);
+		
+		//ASSERT FIRST
 	}
 
 }

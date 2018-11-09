@@ -5,14 +5,25 @@ import org.joda.time.Interval;
 
 public class Prenotazione {
 
-	private int id;
+	private String nomeP;
 	private Interval intervallo;
 	
-	public Prenotazione (int id, DateTime inizio) {
+	public Prenotazione (String nomeP, Interval intervallo) {
 		//aggiungere Persona
-		this.id = id;
+		this.nomeP = nomeP;
 		this.intervallo = intervallo;
-		
 	}
+
+	public Interval getIntervallo() {
+		return intervallo;
+	}
+
+	public String getNomeP() {
+		return nomeP;
+	}
+	
+	
+	
+	
 	
 }
