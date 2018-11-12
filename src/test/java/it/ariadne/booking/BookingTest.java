@@ -22,7 +22,7 @@ public class BookingTest {
 		List<Prenotazione> listaPren = new ArrayList<>();
 		GestionePrenotazioni gesP = new GestionePrenotazioni();
 		
-		Risorsa risorsa = new Macchina();
+		Risorsa risorsa = new Macchina(5);
 		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
 		DateTime fine = new DateTime(2018, 12, 25, 9, 0);
 		DateTime inizio2 = new DateTime(2018,12,25,6,0);
@@ -62,7 +62,7 @@ public class BookingTest {
 	//Prima data disponibile
 	public void TestDisponibile () {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
-		Risorsa ris = new Macchina();
+		Risorsa ris = new Macchina(5);
 		gp.aggiungiRisorsa(ris);
 		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
 		DateTime fine = new DateTime(2018, 12, 25, 8, 59);
@@ -80,6 +80,21 @@ public class BookingTest {
 		DateTime secondaData = gp.primaDataDisponibile(ris, periodo, inizioDisp2, fineDisp2);
 		//TRIANGULATE
 		assertEquals("La prima data disponibile è null", null, secondaData);
+	}
+	@Test
+	public void TestDisponibileLimite () {
+		GestionePrenotazioni gp = new GestionePrenotazioni();
+		Risorsa ris = new Macchina(5);
+		gp.aggiungiRisorsa(ris);
+		DateTime inizio = new DateTime(2018, 11, 12,13, 0);
+		DateTime fine = new DateTime(2018, 11, 12, 16, 59);
+		gp.addPrenotazione("pippo", inizio, fine, ris);
+		String nomeR = ris.getTipo();
+		Period periodo = new Period(3,0,0,0);
+		int numPosti = 4;
+		DateTime dataDispLimite = gp.primaDataDisponibileLimite(nomeR, periodo, numPosti);
+		DateTime dataProva = new DateTime(2018,11,12,17,0);
+		assertEquals("La prima data disponibile che rispetta il limite è",dataProva.getHourOfDay(),dataDispLimite.getHourOfDay());
 	}
 
 }

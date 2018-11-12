@@ -57,12 +57,30 @@ public class GestionePrenotazioni {
 	public DateTime primaDataDisponibile(Risorsa ris, Period periodo, DateTime inizioD, DateTime fineD) {
 		boolean dataDisp = false;
 		while (inizioD.plus(periodo).isBefore(fineD) && dataDisp == false) {//ciclo finchè sono nel periodo di interesse
-			dataDisp = getDisponibilità(inizioD, inizioD.plusHours(3), ris);
+			dataDisp = getDisponibilità(inizioD, inizioD.plus(periodo), ris);
 			if (dataDisp) {
 				DateTime dt = new DateTime(inizioD);
 				return dt;
 			} else {
 				inizioD = inizioD.plusHours(1);
+			}
+		}
+		return null;
+	}
+
+	public DateTime primaDataDisponibileLimite(String nomeR, Period periodo, int numPosti) {
+		boolean dataDisp = false;
+		DateTime dataT = new DateTime();
+		while (dataDisp == false) {
+			for (Map.Entry<Risorsa, List<Prenotazione>> entry : mappa.entrySet()) {
+				if(entry.getKey().getTipo().equals("Macchina") && (entry.getKey().getLimite()>= numPosti)) {
+					dataDisp = getDisponibilità(dataT, dataT.plus(periodo), entry.getKey());
+					if(dataDisp) {						
+						return dataT;
+					} else {
+						dataT = dataT.plusHours(1);
+					}
+				}
 			}
 		}
 		return null;
