@@ -2,13 +2,8 @@ package it.ariadne.booking;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
 import org.joda.time.Period;
 
 import it.ariadne.booking.risorse.Aula;
@@ -23,7 +18,7 @@ public class BookingTest {
 	public void testRichiede() {
 		GestionePrenotazioni gesP = new GestionePrenotazioni();
 		
-		Risorsa risorsa = new Macchina(5);
+		Risorsa risorsa = new Macchina("Toyota Yaris",5);
 		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
 		DateTime fine = new DateTime(2018, 12, 25, 9, 0);
 		DateTime inizio2 = new DateTime(2018,12,25,6,0);
@@ -63,7 +58,7 @@ public class BookingTest {
 	//Prima data disponibile
 	public void TestDisponibile () {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
-		Risorsa ris = new Macchina(5);
+		Risorsa ris = new Macchina("Toyota Yaris",5);
 		gp.aggiungiRisorsa(ris);
 		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
 		DateTime fine = new DateTime(2018, 12, 25, 8, 59);
@@ -85,10 +80,10 @@ public class BookingTest {
 	@Test
 	public void TestDisponibileLimite () {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
-		Risorsa ris = new Macchina(5);
-		Risorsa ris2 = new Macchina(6);
-		Risorsa ris3 = new Aula(45);
-		Risorsa ris4 = new Portatile(4);
+		Risorsa ris = new Macchina("Toyota Yaris",5);
+		Risorsa ris2 = new Macchina("Opel Corsa",6);
+		Risorsa ris3 = new Aula("A5",45);
+		Risorsa ris4 = new Portatile("Asus 845",4);
 		gp.aggiungiRisorsa(ris4);
 		gp.aggiungiRisorsa(ris3);
 		gp.aggiungiRisorsa(ris);
@@ -112,5 +107,25 @@ public class BookingTest {
 		DateTime dataDispLimite3 = gp.primaDataDisponibileLimite(ris.getTipo(), periodo, inizioRicerca, 7);
 		assertEquals("Non esiste una risorsa che rispetti il limite, data null", null,dataDispLimite3);
 	}
+	@Test
+	public void riepilogoPrenotazioniRisorse () {
+		GestionePrenotazioni gp = new GestionePrenotazioni();
+		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
+		DateTime fine = new DateTime(2018, 12, 25, 9, 59);
+		Risorsa aula = new Aula("A5", 200);
+		gp.aggiungiRisorsa(aula);
+		gp.addPrenotazione("pippo", inizio, fine, aula);
+		String riepilogo = gp.riepilogoPrisorsa();
+		String verifica = "Aula A5 ha le seguenti prenotazioni: "+"\n"+"\t"+
+		"Prenotazione pippo 2018-12-25T07:00:00.000+01:00/2018-12-25T09:59:00.000+01:00"+
+				"\n";
+		assertEquals("Il riepilogo prenotazioni aula a5 è",verifica,riepilogo);
+	}
+	
+/*	@Test
+	public void riepilogoPrenotazionePersona () {
+		String riepilogo = gp.riepilogoPpersona("");
+		assertEquals("Riepilogo prenotazione Davide",verifica,riepilogo);
+	}*/
 
 }

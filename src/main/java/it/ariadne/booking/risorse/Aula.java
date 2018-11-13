@@ -5,11 +5,11 @@ import it.ariadne.booking.Risorsa;
 public class Aula implements Risorsa{
 	
 	private int capienza;
-	private String tipo;
+	private String nomeAula;
 	
-	public Aula(int capienza) {
+	public Aula(String nomeAula,int capienza) {
+		this.nomeAula = nomeAula;
 		this.capienza = capienza;
-		this.tipo = "Aula";
 	}
 
 	@Override
@@ -19,6 +19,10 @@ public class Aula implements Risorsa{
 
 	@Override
 	public String getTipo() {
-		return this.tipo;
+		return "Aula";
+	}
+	
+	public String getNome() {
+		return nomeAula;
 	}
 }

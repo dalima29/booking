@@ -5,11 +5,11 @@ import it.ariadne.booking.Risorsa;
 public class Portatile implements Risorsa {
 
 	private int ram;
-	private String tipo;
+	private String nomePortatile;
 	
-	public Portatile(int ram) {
+	public Portatile(String nomePortatile,int ram) {
 		this.ram = ram;
-		this.tipo = "Portatile";
+		this.nomePortatile = nomePortatile;
 	}
 
 	public int getLimite() {
@@ -17,6 +17,10 @@ public class Portatile implements Risorsa {
 	}
 
 	public String getTipo() {
-		return this.tipo;
+		return "Portatile";
+	}
+	
+	public String getNome() {
+		return this.nomePortatile;
 	}
 }

@@ -21,8 +21,7 @@ public class Prenotazione {
 		return nomeP;
 	}
 	
-	
-	
-	
-	
+	public String toString() {//aggiungere persona dopo
+		return "Prenotazione "+this.nomeP+" "+intervallo.toString();
+	}
 }

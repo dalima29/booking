@@ -91,4 +91,32 @@ public class GestionePrenotazioni {
 		return null;
 	}
 
+/*	public String riepilogoPrisorsa(String nomeRis) {
+		String s = "";
+		for(Map.Entry<Risorsa, List<Prenotazione>> entry : mappa.entrySet()) {
+			if(entry.getKey().getNome().equals(nomeRis)) {
+				s = entry.getKey().getTipo()+" "+entry.getKey().getNome()+
+						" ha le seguenti prenotazioni: "+"\n";
+				List<Prenotazione> lista = entry.getValue();
+				for (Prenotazione p : lista) {
+					s+="\t"+p.toString()+"\n";
+				}
+			}
+		}
+		
+		return s;
+	}*/
+	public String riepilogoPrisorsa () {
+		String s="";
+		for(Map.Entry<Risorsa, List<Prenotazione>> entry : mappa.entrySet()) {
+			s = entry.getKey().getTipo()+" "+entry.getKey().getNome()+
+					" ha le seguenti prenotazioni: "+"\n";
+			List<Prenotazione> lista = entry.getValue();
+			for (Prenotazione p: lista) {
+				s+="\t"+p.toString()+"\n";
+			}
+		}
+		return s;
+	}
+
 }

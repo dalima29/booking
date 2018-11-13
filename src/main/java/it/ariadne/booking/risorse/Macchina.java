@@ -5,11 +5,11 @@ import it.ariadne.booking.Risorsa;
 public class Macchina implements Risorsa {
 	
 	private int numeroPosti;
-	private String tipo;
+	private String nomeMacchina;
 	
-	public Macchina (int numeroPosti) {
+	public Macchina (String nomeMacchina, int numeroPosti) {
 		this.numeroPosti = numeroPosti;
-		this.tipo = "Macchina";
+		this.nomeMacchina = nomeMacchina;
 	}
 	
 	public int getLimite () {
@@ -17,7 +17,11 @@ public class Macchina implements Risorsa {
 	}
 	
 	public String getTipo () {
-		return this.tipo;
+		return "Macchina";
+	}
+	
+	public String getNome() {
+		return nomeMacchina;
 	}
 
 }
