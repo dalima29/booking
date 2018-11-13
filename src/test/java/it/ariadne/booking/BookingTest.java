@@ -11,7 +11,9 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
 
+import it.ariadne.booking.risorse.Aula;
 import it.ariadne.booking.risorse.Macchina;
+import it.ariadne.booking.risorse.Portatile;
 
 
 
@@ -19,7 +21,6 @@ public class BookingTest {
 	
 	@Test
 	public void testRichiede() {
-		List<Prenotazione> listaPren = new ArrayList<>();
 		GestionePrenotazioni gesP = new GestionePrenotazioni();
 		
 		Risorsa risorsa = new Macchina(5);
@@ -86,12 +87,17 @@ public class BookingTest {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
 		Risorsa ris = new Macchina(5);
 		Risorsa ris2 = new Macchina(6);
+		Risorsa ris3 = new Aula(45);
+		Risorsa ris4 = new Portatile(4);
+		gp.aggiungiRisorsa(ris4);
+		gp.aggiungiRisorsa(ris3);
 		gp.aggiungiRisorsa(ris);
 		gp.aggiungiRisorsa(ris2);
 		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
 		DateTime fine = new DateTime(2018, 12, 25, 9, 59);
 		gp.addPrenotazione("pippo", inizio, fine, ris);
 		gp.addPrenotazione("pluto", inizio, fine.minusHours(1), ris2);
+		gp.addPrenotazione("paperino", inizio, fine, ris4);
 		Period periodo = new Period(3,0,0,0);
 		int numPosti = 4;
 		DateTime inizioRicerca = new DateTime(2018,12,25,9,0);
