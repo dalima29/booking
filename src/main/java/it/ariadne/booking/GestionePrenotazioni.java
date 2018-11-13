@@ -119,4 +119,14 @@ public class GestionePrenotazioni {
 		return s;
 	}
 
+	public boolean eliminaRisorsa(String nomeR) {
+		for(Map.Entry<Risorsa, List<Prenotazione>> entry : mappa.entrySet()) {
+			if(entry.getKey().getNome().equals(nomeR)) {
+				mappa.remove(entry.getKey());
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

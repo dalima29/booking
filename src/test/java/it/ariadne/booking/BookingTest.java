@@ -137,5 +137,17 @@ public class BookingTest {
 				"\n";
 		assertEquals("Informazioni sulla risorsa",verifica,riepilogo);
 	}
+	
+	@Test
+	public void eliminaRisorsa () {
+		GestionePrenotazioni gp = new GestionePrenotazioni();
+		Risorsa risorsa = new Macchina("Toyota Yaris",5);
+		gp.aggiungiRisorsa(risorsa);
+		boolean esito = gp.eliminaRisorsa(risorsa.getNome());
+		assertEquals("Risorsa eliminata",true,esito);
+		boolean esito2 = gp.eliminaRisorsa(risorsa.getNome());
+		//esito false perchè la risorsa è già stata eliminata
+		assertEquals("Risorsa eliminata",false,esito2);
+	}
 
 }
