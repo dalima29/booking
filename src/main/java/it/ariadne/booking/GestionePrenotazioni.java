@@ -91,7 +91,7 @@ public class GestionePrenotazioni {
 		return null;
 	}
 
-/*	public String riepilogoPrisorsa(String nomeRis) {
+	public String leggiRisorsa(String nomeRis) {
 		String s = "";
 		for(Map.Entry<Risorsa, List<Prenotazione>> entry : mappa.entrySet()) {
 			if(entry.getKey().getNome().equals(nomeRis)) {
@@ -105,7 +105,7 @@ public class GestionePrenotazioni {
 		}
 		
 		return s;
-	}*/
+	}
 	public String riepilogoPrisorsa () {
 		String s="";
 		for(Map.Entry<Risorsa, List<Prenotazione>> entry : mappa.entrySet()) {
