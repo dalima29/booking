@@ -43,12 +43,16 @@ public class GestionePrenotazioni {
 		return esito;
 	}
 	
-	public boolean removePrenotazione(String nomeP, Risorsa ris) {
-		List<Prenotazione> lisP = this.mappa.get(ris);
-		for (Prenotazione p : lisP) {
-			if (p.getNomeP().equals(nomeP)) {
-				lisP.remove(p);
-				return true;
+	public boolean removePrenotazione(String nomeP, String nomeR) {
+		for(Map.Entry<Risorsa, List<Prenotazione>> entry: mappa.entrySet()) {
+			if(entry.getKey().getNome().equals(nomeR)) {
+				List<Prenotazione> lisP = entry.getValue();
+				for(Prenotazione p : lisP) {
+					if(p.getNomeP().equals(nomeP)) {
+						lisP.remove(p);
+						return true;
+					}
+				}
 			}
 		}
 		return false;

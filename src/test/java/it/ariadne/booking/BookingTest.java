@@ -44,8 +44,8 @@ public class BookingTest {
 		//TRIANGULATE
 		assertEquals("La prenotazione non è stata aggiunta, esito false", false, prenotazioneEffettuata2);
 		
-		boolean prenotazioneRimossa = gesP.removePrenotazione("pippo",risorsa);
-		boolean prenotazioneRimossa2 = gesP.removePrenotazione("pluto",risorsa);
+		boolean prenotazioneRimossa = gesP.removePrenotazione("pippo",risorsa.getNome());
+		boolean prenotazioneRimossa2 = gesP.removePrenotazione("pluto",risorsa.getNome());
 		
 		//ASSERT FIRST
 		assertEquals("La prenotazione è stata rimossa", true, prenotazioneRimossa);
