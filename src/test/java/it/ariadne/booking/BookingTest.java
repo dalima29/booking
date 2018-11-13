@@ -70,14 +70,14 @@ public class BookingTest {
 		Period periodo = new Period(3, 0, 0, 0);
 		DateTime inizioDisp = new DateTime(2018,12,25,7,0);
 		DateTime fineDisp = new DateTime(2018,12,26,7,0);
-		DateTime primaData = gp.primaDataDisponibile(ris,periodo,inizioDisp,fineDisp);
+		DateTime primaData = gp.primaDataDisponibile(ris.getTipo(),periodo,inizioDisp,fineDisp);
 		
 		//ASSERT FIRST
 		assertEquals("La prima data disponibile è ora",new DateTime(2018,12,25,9,0),primaData);
 		
 		DateTime inizioDisp2 = new DateTime(2018,12,25,7,0);
 		DateTime fineDisp2 = new DateTime(2018,12,25,9,59);
-		DateTime secondaData = gp.primaDataDisponibile(ris, periodo, inizioDisp2, fineDisp2);
+		DateTime secondaData = gp.primaDataDisponibile(ris.getTipo(), periodo, inizioDisp2, fineDisp2);
 		//TRIANGULATE
 		assertEquals("La prima data disponibile è null", null, secondaData);
 	}
@@ -85,16 +85,26 @@ public class BookingTest {
 	public void TestDisponibileLimite () {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
 		Risorsa ris = new Macchina(5);
+		Risorsa ris2 = new Macchina(6);
 		gp.aggiungiRisorsa(ris);
-		DateTime inizio = new DateTime(2018, 11, 12,13, 0);
-		DateTime fine = new DateTime(2018, 11, 12, 16, 59);
+		gp.aggiungiRisorsa(ris2);
+		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
+		DateTime fine = new DateTime(2018, 12, 25, 9, 59);
 		gp.addPrenotazione("pippo", inizio, fine, ris);
-		String nomeR = ris.getTipo();
+		gp.addPrenotazione("pluto", inizio, fine.minusHours(1), ris2);
 		Period periodo = new Period(3,0,0,0);
 		int numPosti = 4;
-		DateTime dataDispLimite = gp.primaDataDisponibileLimite(nomeR, periodo, numPosti);
-		DateTime dataProva = new DateTime(2018,11,12,17,0);
-		assertEquals("La prima data disponibile che rispetta il limite è",dataProva.getHourOfDay(),dataDispLimite.getHourOfDay());
+		DateTime inizioRicerca = new DateTime(2018,12,25,9,0);
+		DateTime dataDispLimite = gp.primaDataDisponibileLimite(ris.getTipo(), periodo, inizioRicerca,numPosti);
+		//la prima data che va bene è inizioRicerca con la seconda Risorsa;
+		assertEquals("La prima data disponibile che rispetta il limite è",inizioRicerca,dataDispLimite);
+		gp.addPrenotazione("ciao", new DateTime(2018,12,25,9,0), new DateTime(2018,12,25,10,59),ris2);
+		//la prima data che va bene è (2018,12,25,10,0)
+		DateTime dataDispLimite2 = gp.primaDataDisponibileLimite(ris.getTipo(), periodo, inizioRicerca, numPosti);
+		assertEquals("La prima data disponibile che rispetta il limite è", new DateTime(2018,12,25,10,0),dataDispLimite2);
+		//non ho una risorsa che rispetti il limite
+		DateTime dataDispLimite3 = gp.primaDataDisponibileLimite(ris.getTipo(), periodo, inizioRicerca, 7);
+		assertEquals("Non esiste una risorsa che rispetti il limite, data null", null,dataDispLimite3);
 	}
 
 }
