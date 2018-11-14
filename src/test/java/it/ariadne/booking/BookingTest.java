@@ -326,5 +326,21 @@ public class BookingTest {
 				"\n";
 		assertEquals("Informazioni sulla risorsa",verifica,riepilogo);
 	}
+	@Test
+	public void testAmministratoreRiepilogoPrenotazioniPerRisorsa() {
+		Persona p = new Utente("Davide", "Rossi", "das@gmail.com","pluto","ciao");
+		Persona p2 = new Amministratore("Davide", "Limardi", "das@gmail.com","pippo","ciao");
+		GestionePrenotazioni gp = new GestionePrenotazioni();
+		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
+		DateTime fine = new DateTime(2018, 12, 25, 9, 59);
+		Risorsa aula = new Aula("A5", 200);
+		((Amministratore)p2).aggiungiRisorsa(gp,aula);
+		((Utente)p).addPrenotazione(gp,"pippo", inizio, fine, aula);
+		String riepilogo = ((Amministratore)p2).riepilogoPrisorsa(gp);
+		String verifica = "Aula A5 ha le seguenti prenotazioni: "+"\n"+"\t"+
+		"Prenotazione pippo effettuata da Davide Rossi pluto 2018-12-25T07:00:00.000+01:00/2018-12-25T09:59:00.000+01:00"+
+				"\n";
+		assertEquals("Il riepilogo prenotazioni aula a5 è",verifica,riepilogo);
+	}
 
 }

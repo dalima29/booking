@@ -17,4 +17,8 @@ public class Amministratore extends Persona{
 		return gp.leggiRisorsa(nomeR);
 	}
 
+	public String riepilogoPrisorsa(GestionePrenotazioni gp) {
+		return gp.riepilogoPrisorsa();
+	}
+
 }

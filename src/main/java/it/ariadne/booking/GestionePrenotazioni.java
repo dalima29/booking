@@ -19,12 +19,12 @@ public class GestionePrenotazioni {
 	}
 	
 	public boolean aggiungiRisorsa(Risorsa ris) {
-		boolean risorsaEsistente = false;
-		for(Map.Entry<Risorsa, List<Prenotazione>> entry: mappa.entrySet()) {
+		boolean risorsaEsistente = this.mappa.containsKey(ris);
+/*		for(Map.Entry<Risorsa, List<Prenotazione>> entry: mappa.entrySet()) {
 			if (entry.getKey().getNome().equals(ris.getNome())) {
 				risorsaEsistente = true;
 			}
-		}
+		}*/
 		if(!risorsaEsistente) {
 			List<Prenotazione> lis = new ArrayList<>();
 			mappa.put(ris, lis);
