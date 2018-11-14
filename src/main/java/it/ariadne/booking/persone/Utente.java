@@ -39,4 +39,12 @@ public class Utente extends Persona{
 		return gp.primaDataDisponibileLimite(tipo, periodo, inizioRicerca, limite);
 	}
 
+	public String getPrenotazioniUtenteNonPassate(GestionePrenotazioni gp) {
+		return gp.getPrenotazioniUtenteNonPassate(this.getUsername());
+	}
+
+	public String getCronologiaPrenotazioniUtente(GestionePrenotazioni gp) {
+		return gp.getCronologiaPrenotazioniUtente(this.getUsername());
+	}
+
 }

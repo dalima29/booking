@@ -148,6 +148,35 @@ public class GestionePrenotazioni {
 		}
 		return s;
 	}
+	
+	public String getPrenotazioniUtenteNonPassate(String username) {
+		String s = "Le mie prenotazioni sono ";
+		for(Map.Entry<Risorsa, List<Prenotazione>> entry : mappa.entrySet()) {
+			s+="\n";
+			for(Prenotazione p : entry.getValue()) {
+				if (p.getPersona().getUsername().equals(username)
+						&& p.getIntervallo().isAfterNow()) {
+					s+="\t"+entry.getKey().getTipo()+" "+entry.getKey().getNome()+ " "
+							+p.toString()+"\n";
+				}
+			}
+		}
+		return s;
+	}
+	
+	public String getCronologiaPrenotazioniUtente(String username) {
+		String s = "Le mie prenotazioni sono ";
+		for(Map.Entry<Risorsa, List<Prenotazione>> entry : mappa.entrySet()) {
+			s+="\n";
+			for(Prenotazione p : entry.getValue()) {
+				if (p.getPersona().getUsername().equals(username)) {
+					s+="\t"+entry.getKey().getTipo()+" "+entry.getKey().getNome()+ " "
+							+p.toString()+"\n";
+				}
+			}
+		}
+		return s;
+	}
 
 	public boolean eliminaRisorsa(String nomeR) {
 		for(Map.Entry<Risorsa, List<Prenotazione>> entry : mappa.entrySet()) {
@@ -158,6 +187,10 @@ public class GestionePrenotazioni {
 		}
 		return false;
 	}
+
+
+
+
 
 
 

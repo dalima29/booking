@@ -140,6 +140,35 @@ public class BookingTest {
 				"\n";
 		assertEquals("Il riepilogo prenotazioni aula a5 è",verifica,riepilogo);
 	}
+	@Test
+	public void riepilogoPrenotazioniUtenteNonPassate () {
+		GestionePrenotazioni gp = new GestionePrenotazioni();
+		Persona p = new Utente("Davide", "Limardi", "das@gmail.com","pluto","ciao");
+		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
+		DateTime fine = new DateTime(2018, 12, 25, 9, 59);
+		Risorsa ris = new Macchina("Toyota yaris",5);
+		gp.aggiungiRisorsa(ris);
+		((Utente)p).addPrenotazione(gp,"pippo", inizio, fine, ris);
+		String stringaDaVerificare ="Le mie prenotazioni sono "+"\n"+"\t"+
+		"Macchina Toyota yaris Prenotazione pippo effettuata da Davide Limardi pluto "+"2018-12-25T07:00:00.000+01:00/2018-12-25T09:59:00.000+01:00"+
+		"\n";
+		String prenotazioni = ((Utente)p).getPrenotazioniUtenteNonPassate(gp);
+		assertEquals("Le prenotazione di Davide sono",stringaDaVerificare,prenotazioni);
+		//data passata
+		DateTime inizio2 = new DateTime(2018, 11, 12, 7, 0);
+		DateTime fine2 = new DateTime(2018, 11, 12, 9, 59);
+		((Utente)p).addPrenotazione(gp,"pippo", inizio2, fine2, ris);
+		String stringaDaVerificare2=stringaDaVerificare;
+		String prenotazioni2 = ((Utente)p).getPrenotazioniUtenteNonPassate(gp);
+		assertEquals("Le mie prenotazioni sono ",stringaDaVerificare2,prenotazioni2);
+		//cronologia prenotazioni
+		String stringaDaVerificare3 =stringaDaVerificare+"\t"+
+				"Macchina Toyota yaris Prenotazione pippo effettuata da Davide Limardi pluto "+"2018-11-12T07:00:00.000+01:00/2018-11-12T09:59:00.000+01:00"+
+				"\n";
+		String prenotazioni3 = ((Utente)p).getCronologiaPrenotazioniUtente(gp);
+		assertEquals("Le mie prenotazioni sono ",stringaDaVerificare3,prenotazioni3);
+	}
+
 	
 	@Test
 	public void leggiRisorsa () {
