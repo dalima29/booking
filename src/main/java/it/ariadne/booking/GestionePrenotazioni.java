@@ -57,6 +57,19 @@ public class GestionePrenotazioni {
 		}
 		return false;
 	}
+	
+	public DateTime primaData(Risorsa ris, Period periodo, DateTime inizioRicerca) {
+		boolean dataDisp = false;
+		while(dataDisp == false) {
+			dataDisp = getDisponibilità(inizioRicerca, inizioRicerca.plus(periodo), ris);
+			if (dataDisp) {
+				DateTime dt = new DateTime(inizioRicerca);
+				return dt;
+			}
+			inizioRicerca = inizioRicerca.plusHours(1);
+		}
+		return null;
+	}
 
 	public DateTime primaDataDisponibile(String tipoRis,Period periodo,DateTime inizioD,DateTime fineD) {
 		boolean dataDisp = false;
@@ -132,5 +145,7 @@ public class GestionePrenotazioni {
 		}
 		return false;
 	}
+
+
 
 }
