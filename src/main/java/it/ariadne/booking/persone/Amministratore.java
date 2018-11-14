@@ -13,4 +13,8 @@ public class Amministratore extends Persona{
 		return gp.aggiungiRisorsa(risorsa);
 	}
 
+	public String leggiRisorsa(GestionePrenotazioni gp, String nomeR) {
+		return gp.leggiRisorsa(nomeR);
+	}
+
 }

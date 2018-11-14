@@ -299,7 +299,7 @@ public class BookingTest {
 		assertEquals("Non esiste una risorsa che rispetti il limite, data null", null,dataDispLimite3);
 	}
 	@Test
-	public void testAggiungiRisorsa() {
+	public void testAggiungiRisorsaAmministratore() {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
 		Risorsa risorsa = new Macchina("Toyota Yaris", 5);
 		Persona p = new Amministratore("Davide", "Limardi", "das@gmail.com","pippo","ciao");
@@ -308,6 +308,23 @@ public class BookingTest {
 		//la risorsa c'è già esito false
 		boolean esito2 = ((Amministratore)p).aggiungiRisorsa(gp,risorsa);
 		assertEquals("La risorsa non è stata aggiunta",false,esito2);
+	}
+	@Test
+	public void testLeggiRisorsaAmministratore() {
+		Persona p = new Utente("Davide", "Rossi", "das@gmail.com","pluto","ciao");
+		Persona p2 = new Amministratore("Davide", "Limardi", "das@gmail.com","pippo","ciao");
+		Risorsa risorsa = new Portatile("Lenovo G230",4);
+		String nomeR = risorsa.getNome();
+		GestionePrenotazioni gp = new GestionePrenotazioni();
+		((Amministratore)p2).aggiungiRisorsa(gp,risorsa);
+		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
+		DateTime fine = new DateTime(2018, 12, 25, 9, 59);
+		((Utente)p).addPrenotazione(gp,"pippo", inizio, fine, risorsa);
+		String riepilogo = ((Amministratore)p2).leggiRisorsa(gp,nomeR);
+		String verifica = "Portatile Lenovo G230 ha le seguenti prenotazioni: "+"\n"+"\t"+
+		"Prenotazione pippo effettuata da Davide Rossi pluto 2018-12-25T07:00:00.000+01:00/2018-12-25T09:59:00.000+01:00"+
+				"\n";
+		assertEquals("Informazioni sulla risorsa",verifica,riepilogo);
 	}
 
 }
