@@ -20,14 +20,9 @@ public class GestionePrenotazioni {
 	
 	public boolean aggiungiRisorsa(Risorsa ris) {
 		boolean risorsaEsistente = this.mappa.containsKey(ris);
-/*		for(Map.Entry<Risorsa, List<Prenotazione>> entry: mappa.entrySet()) {
-			if (entry.getKey().getNome().equals(ris.getNome())) {
-				risorsaEsistente = true;
-			}
-		}*/
 		if(!risorsaEsistente) {
 			List<Prenotazione> lis = new ArrayList<>();
-			mappa.put(ris, lis);
+			this.mappa.put(ris, lis);
 			return true;
 		} else {
 			System.out.println("risorsa già esistente");
@@ -128,8 +123,7 @@ public class GestionePrenotazioni {
 			if(entry.getKey().getNome().equals(nomeRis)) {
 				s = entry.getKey().getTipo()+" "+entry.getKey().getNome()+
 						" ha le seguenti prenotazioni: "+"\n";
-				List<Prenotazione> lista = entry.getValue();
-				for (Prenotazione p : lista) {
+				for (Prenotazione p : entry.getValue()) {
 					s+="\t"+p.toString()+"\n";
 				}
 			}
@@ -143,11 +137,28 @@ public class GestionePrenotazioni {
 		for(Map.Entry<Risorsa, List<Prenotazione>> entry : mappa.entrySet()) {
 			s = entry.getKey().getTipo()+" "+entry.getKey().getNome()+
 					" ha le seguenti prenotazioni: "+"\n";
-			List<Prenotazione> lista = entry.getValue();
-			for (Prenotazione p: lista) {
+			for (Prenotazione p: entry.getValue()) {
 				s+="\t"+p.toString()+"\n";
 			}
 		}
+		return s;
+	}
+	
+	public String riepilogoPpersona(List<Persona> lista) {
+		String s = "";
+		for (Persona p : lista) {
+			s+=p.getNome()+" "+p.getCognome()+" "+p.getUsername()+"\n";
+			for(Map.Entry<Risorsa, List<Prenotazione>> entry : mappa.entrySet()) {
+				for(Prenotazione pre :entry.getValue()) {
+					if(pre.getPersona().getUsername().equals(p.getUsername())) {
+						s+="\t"+entry.getKey().getTipo()+" "+
+					entry.getKey().getNome()+" "+"Prenotazione "+pre.getNomeP()+
+					" "+pre.getIntervallo().toString()+"\n";
+					}
+				}
+			}
+		}
+		System.out.println(s);
 		return s;
 	}
 	
@@ -189,11 +200,5 @@ public class GestionePrenotazioni {
 		}
 		return false;
 	}
-
-
-
-
-
-
 
 }

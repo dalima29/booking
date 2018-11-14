@@ -2,6 +2,9 @@ package it.ariadne.booking;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.joda.time.Period;
@@ -339,6 +342,37 @@ public class BookingTest {
 		String riepilogo = ((Amministratore)p2).riepilogoPrisorsa(gp);
 		String verifica = "Aula A5 ha le seguenti prenotazioni: "+"\n"+"\t"+
 		"Prenotazione pippo effettuata da Davide Rossi pluto 2018-12-25T07:00:00.000+01:00/2018-12-25T09:59:00.000+01:00"+
+				"\n";
+		assertEquals("Il riepilogo prenotazioni aula a5 è",verifica,riepilogo);
+	}
+	@Test
+	public void eliminaRisorsaAmministratore () {
+		GestionePrenotazioni gp = new GestionePrenotazioni();
+		Persona p2 = new Amministratore("Davide", "Limardi", "das@gmail.com","pippo","ciao");
+		Risorsa risorsa = new Macchina("Toyota Yaris",5);
+		((Amministratore)p2).aggiungiRisorsa(gp,risorsa);
+		boolean esito = ((Amministratore)p2).eliminaRisorsa(gp,risorsa.getNome());
+		assertEquals("Risorsa eliminata",true,esito);
+		boolean esito2 = ((Amministratore)p2).eliminaRisorsa(gp,risorsa.getNome());
+		//esito false perchè la risorsa è già stata eliminata
+		assertEquals("Risorsa eliminata",false,esito2);
+	}
+	
+	@Test
+	public void testAmministratoreRiepilogoPrenotazioniPerPersona() {
+		Persona p = new Utente("Davide", "Rossi", "das@gmail.com","pluto","ciao");
+		Persona p2 = new Amministratore("Davide", "Limardi", "das@gmail.com","pippo","ciao");
+		List<Persona> lista = new ArrayList<>();
+		lista.add(p);
+		GestionePrenotazioni gp = new GestionePrenotazioni();
+		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
+		DateTime fine = new DateTime(2018, 12, 25, 9, 59);
+		Risorsa aula = new Aula("A5", 200);
+		((Amministratore)p2).aggiungiRisorsa(gp,aula);
+		((Utente)p).addPrenotazione(gp,"ppp", inizio, fine, aula);
+		String riepilogo = ((Amministratore)p2).riepilogoPpersona(gp,lista);
+		String verifica = "Davide Rossi pluto"+"\n"+"\t"+
+		"Aula A5 Prenotazione ppp "+"2018-12-25T07:00:00.000+01:00/2018-12-25T09:59:00.000+01:00"+
 				"\n";
 		assertEquals("Il riepilogo prenotazioni aula a5 è",verifica,riepilogo);
 	}

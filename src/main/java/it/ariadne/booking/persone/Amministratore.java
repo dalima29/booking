@@ -1,5 +1,7 @@
 package it.ariadne.booking.persone;
 
+import java.util.List;
+
 import it.ariadne.booking.GestionePrenotazioni;
 import it.ariadne.booking.Risorsa;
 
@@ -20,5 +22,16 @@ public class Amministratore extends Persona{
 	public String riepilogoPrisorsa(GestionePrenotazioni gp) {
 		return gp.riepilogoPrisorsa();
 	}
+
+	public boolean eliminaRisorsa(GestionePrenotazioni gp, String nome) {
+		return gp.eliminaRisorsa(nome);
+	}
+
+	public String riepilogoPpersona(GestionePrenotazioni gp, List<Persona> lista) {
+		// TODO Auto-generated method stub
+		return gp.riepilogoPpersona(lista);
+	}
+
+
 
 }
