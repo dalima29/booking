@@ -201,4 +201,14 @@ public class GestionePrenotazioni {
 		return false;
 	}
 
+	public boolean aggiornaRisorsa(String nomeR, int limiteDaModificare) {
+		for(Map.Entry<Risorsa, List<Prenotazione>> entry : this.mappa.entrySet()) {
+			if(entry.getKey().getNome().equals(nomeR)) {
+				entry.getKey().setLimite(limiteDaModificare);
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

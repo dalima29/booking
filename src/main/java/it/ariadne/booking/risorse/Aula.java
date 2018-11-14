@@ -16,6 +16,10 @@ public class Aula implements Risorsa{
 	public int getLimite() {
 		return this.capienza;
 	}
+	
+	public void setLimite(int limite) {
+		this.capienza = limite;
+	}
 
 	@Override
 	public String getTipo() {

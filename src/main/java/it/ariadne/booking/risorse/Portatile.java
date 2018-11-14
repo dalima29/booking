@@ -15,6 +15,10 @@ public class Portatile implements Risorsa {
 	public int getLimite() {
 		return this.ram;
 	}
+	
+	public void setLimite(int limite) {
+		this.ram = limite;
+	}
 
 	public String getTipo() {
 		return "Portatile";

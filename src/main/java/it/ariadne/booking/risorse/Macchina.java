@@ -16,6 +16,10 @@ public class Macchina implements Risorsa {
 		return this.numeroPosti;
 	}
 	
+	public void setLimite (int limite) {
+		this.numeroPosti = limite;
+	}
+	
 	public String getTipo () {
 		return "Macchina";
 	}

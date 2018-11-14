@@ -32,6 +32,10 @@ public class Amministratore extends Persona{
 		return gp.riepilogoPpersona(lista);
 	}
 
+	public boolean aggiornaRisorsa(GestionePrenotazioni gp, String nomeR, int limiteDaModificare) {
+		return gp.aggiornaRisorsa(nomeR,limiteDaModificare);
+	}
+
 
 
 }

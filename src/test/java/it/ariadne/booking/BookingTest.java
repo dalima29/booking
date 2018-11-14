@@ -376,5 +376,18 @@ public class BookingTest {
 				"\n";
 		assertEquals("Il riepilogo prenotazioni aula a5 è",verifica,riepilogo);
 	}
+	@Test
+	public void aggiornaRisorsa() {
+		GestionePrenotazioni gp = new GestionePrenotazioni();
+		Persona p = new Utente("Davide", "Rossi", "das@gmail.com","pluto","ciao");
+		Persona p2 = new Amministratore("Davide", "Limardi", "das@gmail.com","pippo","ciao");
+		int limiteDaModificare = 200;
+		Risorsa aula = new Aula("A5", 100);
+		((Amministratore)p2).aggiungiRisorsa(gp, aula);
+		String nomeR = aula.getNome();
+		boolean verifica = true;
+		boolean esito = ((Amministratore)p2).aggiornaRisorsa(gp,nomeR,limiteDaModificare);
+		assertEquals("risorsa aggiornata positivamente",verifica,esito);
+	}
 
 }
