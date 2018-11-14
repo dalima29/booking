@@ -8,6 +8,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
 
+import it.ariadne.booking.persone.Persona;
+
 public class GestionePrenotazioni {
 	
 	private Map <Risorsa,List<Prenotazione>> mappa;
@@ -17,8 +19,18 @@ public class GestionePrenotazioni {
 	}
 	
 	public void aggiungiRisorsa(Risorsa ris) {
-		List<Prenotazione> lis = new ArrayList<>();
-		mappa.put(ris, lis);
+		boolean risorsaEsistente = false;
+		for(Map.Entry<Risorsa, List<Prenotazione>> entry: mappa.entrySet()) {
+			if (entry.getKey().getNome().equals(ris.getNome())) {
+				risorsaEsistente = true;
+			}
+		}
+		if(!risorsaEsistente) {
+			List<Prenotazione> lis = new ArrayList<>();
+			mappa.put(ris, lis);
+		} else {
+			System.out.println("risorsa già esistente");
+		}
 	}
 	
 	public boolean getDisponibilità(DateTime inizio, DateTime fine, Risorsa ris) {
@@ -32,12 +44,12 @@ public class GestionePrenotazioni {
 		return true;
 	}
 	
-	public boolean addPrenotazione (String nomeP, DateTime inizio, DateTime fine, Risorsa ris) {
+	public boolean addPrenotazione (String nomeP, DateTime inizio, DateTime fine, Risorsa ris, Persona persona) {
 		List<Prenotazione> lis = this.mappa.get(ris);
 		boolean esito = getDisponibilità(inizio, fine, ris);
 		if (esito) {
 			Interval intervallo = new Interval(inizio,fine);
-			Prenotazione p = new Prenotazione(nomeP,intervallo);
+			Prenotazione p = new Prenotazione(nomeP,intervallo,persona);
 			lis.add(p);
 		}
 		return esito;
@@ -123,6 +135,7 @@ public class GestionePrenotazioni {
 		
 		return s;
 	}
+	
 	public String riepilogoPrisorsa () {
 		String s="";
 		for(Map.Entry<Risorsa, List<Prenotazione>> entry : mappa.entrySet()) {

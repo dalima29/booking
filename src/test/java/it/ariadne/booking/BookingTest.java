@@ -29,7 +29,7 @@ public class BookingTest {
 		DateTime fine3 = new DateTime(2018,12,25,12,0);
 		
 		gesP.aggiungiRisorsa(risorsa);
-		boolean prenotazioneEffettuata = gesP.addPrenotazione("pippo",inizio,fine,risorsa);
+		boolean prenotazioneEffettuata = gesP.addPrenotazione("pippo",inizio,fine,risorsa,null);
 		
 		boolean disponibilità = gesP.getDisponibilità(inizio,fine,risorsa);
 		boolean disponibilità2 = gesP.getDisponibilità(inizio2, fine2,risorsa);
@@ -40,7 +40,7 @@ public class BookingTest {
 		assertEquals("La risorsa è disponibile in quella data", false, disponibilità2);
 		assertEquals("La risorsa è disponibile in quella data", true, disponibilità3);
 		
-		boolean prenotazioneEffettuata2 = gesP.addPrenotazione("pippo2",inizio2, fine2,risorsa);
+		boolean prenotazioneEffettuata2 = gesP.addPrenotazione("pippo2",inizio2, fine2,risorsa,null);
 		//ASSERT FIRST
 		assertEquals("La prenotazione è stata aggiunta", true, prenotazioneEffettuata);
 		//TRIANGULATE
@@ -63,7 +63,7 @@ public class BookingTest {
 		gp.aggiungiRisorsa(ris);
 		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
 		DateTime fine = new DateTime(2018, 12, 25, 9, 59);
-		gp.addPrenotazione("pippo", inizio, fine, ris);
+		gp.addPrenotazione("pippo", inizio, fine, ris,null);
 		Period periodo = new Period(3,0,0,0);
 		DateTime inizioRicerca = new DateTime(2018,12,25,9,0);
 		DateTime dataDisp = gp.primaData(ris, periodo, inizioRicerca);
@@ -80,7 +80,7 @@ public class BookingTest {
 		gp.aggiungiRisorsa(ris);
 		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
 		DateTime fine = new DateTime(2018, 12, 25, 8, 59);
-		gp.addPrenotazione("pippo", inizio, fine, ris);
+		gp.addPrenotazione("pippo", inizio, fine, ris, null);
 		Period periodo = new Period(3, 0, 0, 0);
 		DateTime inizioDisp = new DateTime(2018,12,25,7,0);
 		DateTime fineDisp = new DateTime(2018,12,26,7,0);
@@ -108,16 +108,16 @@ public class BookingTest {
 		gp.aggiungiRisorsa(ris2);
 		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
 		DateTime fine = new DateTime(2018, 12, 25, 9, 59);
-		gp.addPrenotazione("pippo", inizio, fine, ris);
-		gp.addPrenotazione("pluto", inizio, fine.minusHours(1), ris2);
-		gp.addPrenotazione("paperino", inizio, fine, ris4);
+		gp.addPrenotazione("pippo", inizio, fine, ris, null);
+		gp.addPrenotazione("pluto", inizio, fine.minusHours(1), ris2, null);
+		gp.addPrenotazione("paperino", inizio, fine, ris4, null);
 		Period periodo = new Period(3,0,0,0);
 		int numPosti = 4;
 		DateTime inizioRicerca = new DateTime(2018,12,25,9,0);
 		DateTime dataDispLimite = gp.primaDataDisponibileLimite(ris.getTipo(), periodo, inizioRicerca,numPosti);
 		//la prima data che va bene è inizioRicerca con la seconda Risorsa;
 		assertEquals("La prima data disponibile che rispetta il limite è",inizioRicerca,dataDispLimite);
-		gp.addPrenotazione("ciao", new DateTime(2018,12,25,9,0), new DateTime(2018,12,25,10,59),ris2);
+		gp.addPrenotazione("ciao", new DateTime(2018,12,25,9,0), new DateTime(2018,12,25,10,59),ris2,null);
 		//la prima data che va bene è (2018,12,25,10,0)
 		DateTime dataDispLimite2 = gp.primaDataDisponibileLimite(ris.getTipo(), periodo, inizioRicerca, numPosti);
 		assertEquals("La prima data disponibile che rispetta il limite è", new DateTime(2018,12,25,10,0),dataDispLimite2);
@@ -127,31 +127,33 @@ public class BookingTest {
 	}
 	@Test
 	public void riepilogoPrenotazioniRisorse () {
+		Persona p = new Utente("Davide", "Limardi", "das@gmail.com","pluto","ciao");
 		GestionePrenotazioni gp = new GestionePrenotazioni();
 		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
 		DateTime fine = new DateTime(2018, 12, 25, 9, 59);
 		Risorsa aula = new Aula("A5", 200);
 		gp.aggiungiRisorsa(aula);
-		gp.addPrenotazione("pippo", inizio, fine, aula);
+		((Utente)p).addPrenotazione(gp,"pippo", inizio, fine, aula);
 		String riepilogo = gp.riepilogoPrisorsa();
 		String verifica = "Aula A5 ha le seguenti prenotazioni: "+"\n"+"\t"+
-		"Prenotazione pippo 2018-12-25T07:00:00.000+01:00/2018-12-25T09:59:00.000+01:00"+
+		"Prenotazione pippo effettuata da Davide Limardi pluto 2018-12-25T07:00:00.000+01:00/2018-12-25T09:59:00.000+01:00"+
 				"\n";
 		assertEquals("Il riepilogo prenotazioni aula a5 è",verifica,riepilogo);
 	}
 	
 	@Test
 	public void leggiRisorsa () {
+		Persona p = new Utente("Davide", "Limardi", "das@gmail.com","pluto","ciao");
 		Risorsa risorsa = new Portatile("Lenovo G230",4);
 		String nomeR = risorsa.getNome();
 		GestionePrenotazioni gp = new GestionePrenotazioni();
 		gp.aggiungiRisorsa(risorsa);
 		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
 		DateTime fine = new DateTime(2018, 12, 25, 9, 59);
-		gp.addPrenotazione("pippo", inizio, fine, risorsa);
+		((Utente)p).addPrenotazione(gp,"pippo", inizio, fine, risorsa);
 		String riepilogo = gp.leggiRisorsa(nomeR);
 		String verifica = "Portatile Lenovo G230 ha le seguenti prenotazioni: "+"\n"+"\t"+
-		"Prenotazione pippo 2018-12-25T07:00:00.000+01:00/2018-12-25T09:59:00.000+01:00"+
+		"Prenotazione pippo effettuata da Davide Limardi pluto 2018-12-25T07:00:00.000+01:00/2018-12-25T09:59:00.000+01:00"+
 				"\n";
 		assertEquals("Informazioni sulla risorsa",verifica,riepilogo);
 	}

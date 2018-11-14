@@ -14,7 +14,7 @@ public class Utente extends Persona{
 
 	public boolean addPrenotazione(GestionePrenotazioni gp, String nomeP, DateTime inizio, DateTime fine,
 			Risorsa risorsa) {
-		return gp.addPrenotazione(nomeP, inizio, fine, risorsa);
+		return gp.addPrenotazione(nomeP, inizio, fine, risorsa,this);
 	}
 
 	public boolean getDisponibilità(GestionePrenotazioni gp, DateTime inizio, DateTime fine, Risorsa risorsa) {
