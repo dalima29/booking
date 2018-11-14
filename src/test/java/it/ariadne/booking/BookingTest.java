@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.joda.time.Period;
 
+import it.ariadne.booking.persone.Amministratore;
 import it.ariadne.booking.persone.Persona;
 import it.ariadne.booking.persone.Utente;
 import it.ariadne.booking.risorse.Aula;
@@ -296,6 +297,17 @@ public class BookingTest {
 		//non ho una risorsa che rispetti il limite
 		DateTime dataDispLimite3 = ((Utente)p).primaDataDisponibileLimite(gp,ris.getTipo(), periodo, inizioRicerca, 7);
 		assertEquals("Non esiste una risorsa che rispetti il limite, data null", null,dataDispLimite3);
+	}
+	@Test
+	public void testAggiungiRisorsa() {
+		GestionePrenotazioni gp = new GestionePrenotazioni();
+		Risorsa risorsa = new Macchina("Toyota Yaris", 5);
+		Persona p = new Amministratore("Davide", "Limardi", "das@gmail.com","pippo","ciao");
+		boolean esito = ((Amministratore)p).aggiungiRisorsa(gp,risorsa);
+		assertEquals("La risorsa è stata aggiunta",true,esito);
+		//la risorsa c'è già esito false
+		boolean esito2 = ((Amministratore)p).aggiungiRisorsa(gp,risorsa);
+		assertEquals("La risorsa non è stata aggiunta",false,esito2);
 	}
 
 }

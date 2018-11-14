@@ -18,7 +18,7 @@ public class GestionePrenotazioni {
 		mappa = new LinkedHashMap<>();
 	}
 	
-	public void aggiungiRisorsa(Risorsa ris) {
+	public boolean aggiungiRisorsa(Risorsa ris) {
 		boolean risorsaEsistente = false;
 		for(Map.Entry<Risorsa, List<Prenotazione>> entry: mappa.entrySet()) {
 			if (entry.getKey().getNome().equals(ris.getNome())) {
@@ -28,8 +28,10 @@ public class GestionePrenotazioni {
 		if(!risorsaEsistente) {
 			List<Prenotazione> lis = new ArrayList<>();
 			mappa.put(ris, lis);
+			return true;
 		} else {
 			System.out.println("risorsa già esistente");
+			return false;
 		}
 	}
 	
