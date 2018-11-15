@@ -379,7 +379,6 @@ public class BookingTest {
 	@Test
 	public void aggiornaRisorsa() {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
-		Persona p = new Utente("Davide", "Rossi", "das@gmail.com","pluto","ciao");
 		Persona p2 = new Amministratore("Davide", "Limardi", "das@gmail.com","pippo","ciao");
 		int limiteDaModificare = 200;
 		Risorsa aula = new Aula("A5", 100);
