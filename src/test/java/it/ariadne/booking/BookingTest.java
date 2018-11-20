@@ -19,45 +19,42 @@ import it.ariadne.booking.risorse.Portatile;
 
 
 public class BookingTest {
+	@Test
+	public void prendiEmailEpassword () {
+		Persona p = new Utente("Davide", "Limardi", "@gmail.com", "pippo", "123456");
+		String email = ((Utente)p).getEmail();
+		assertEquals("email è","@gmail.com",email);
+		String password = ((Utente)p).getPassword();
+		assertEquals("password è","123456",password);
+	}
 	
 	@Test
-	public void testRichiede() {
-		GestionePrenotazioni gesP = new GestionePrenotazioni();
-		
-		Risorsa risorsa = new Macchina("Toyota Yaris",5);
-		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
-		DateTime fine = new DateTime(2018, 12, 25, 9, 0);
-		DateTime inizio2 = new DateTime(2018,12,25,6,0);
-		DateTime fine2 = new DateTime(2018,12,25,10,0);
-		DateTime inizio3 = new DateTime(2018,12,25,10,0);
-		DateTime fine3 = new DateTime(2018,12,25,12,0);
-		
-		gesP.aggiungiRisorsa(risorsa);
-		boolean prenotazioneEffettuata = gesP.addPrenotazione("pippo",inizio,fine,risorsa,null);
-		
-		boolean disponibilità = gesP.getDisponibilità(inizio,fine,risorsa);
-		boolean disponibilità2 = gesP.getDisponibilità(inizio2, fine2,risorsa);
-		boolean disponibilità3 = gesP.getDisponibilità(inizio3, fine3,risorsa);
-		//ASSERT FIRST
-		assertEquals("La risorsa è disponibile in quella data", false, disponibilità);
-		//TRIANGULATE
-		assertEquals("La risorsa è disponibile in quella data", false, disponibilità2);
-		assertEquals("La risorsa è disponibile in quella data", true, disponibilità3);
-		
-		boolean prenotazioneEffettuata2 = gesP.addPrenotazione("pippo2",inizio2, fine2,risorsa,null);
-		//ASSERT FIRST
-		assertEquals("La prenotazione è stata aggiunta", true, prenotazioneEffettuata);
-		//TRIANGULATE
-		assertEquals("La prenotazione non è stata aggiunta, esito false", false, prenotazioneEffettuata2);
-		
-		boolean prenotazioneRimossa = gesP.removePrenotazione("pippo",risorsa.getNome());
-		boolean prenotazioneRimossa2 = gesP.removePrenotazione("pluto",risorsa.getNome());
-		
-		//ASSERT FIRST
-		assertEquals("La prenotazione è stata rimossa", true, prenotazioneRimossa);
-		//TRIANGULATE
-		assertEquals("La prenotazione non è stata rimossa, esito false", false, prenotazioneRimossa2);
-		
+	public void rimuoviPrenotazione () {
+		GestionePrenotazioni gp = new GestionePrenotazioni();
+		Persona p = new Utente("Davide","Limardi" , "@gmail.com","pippo", "123456");
+		Risorsa ris = new Macchina("Toyota Yaris",5);
+		//((Utente)p).addPrenotazione(gp, "pluto", inizio, fine, ris);
+		boolean esito = ((Utente)p).removePrenotazione(gp, "pluto", ris.getNome());
+		assertEquals("La prenotazione non è stata rimossa, esito false", false,esito);
+	}
+	
+	@Test
+	public void ottieniLimite () {
+		Risorsa risorsa = new Aula("A5", 5);
+		int limite = risorsa.getLimite();
+		assertEquals("il limite è",5,limite);
+		Risorsa portatile = new Portatile("Lenovo", 4);
+		int limite2 = portatile.getLimite();
+		assertEquals("il limite è",4,limite2);
+	}
+	@Test
+	public void cambiaLimite () {
+		Risorsa macchina = new Macchina("Opel",5);
+		macchina.setLimite(4);
+		assertEquals("il limite è",4,macchina.getLimite());
+		Risorsa portatile = new Portatile("Lenovo", 4);
+		portatile.setLimite(8);
+		assertEquals("il limte è",8,portatile.getLimite());
 	}
 	
 	@Test
@@ -219,7 +216,7 @@ public class BookingTest {
 		assertEquals("Prenotazione rimossa",true,esito2);
 	}
 	
-	@Test
+/*	@Test
 	public void testUtentePrendiDisponibilità() {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
 		DateTime inizio = new DateTime(2018,12,25,7,0);
@@ -229,7 +226,7 @@ public class BookingTest {
 		gp.aggiungiRisorsa(risorsa);
 		boolean esito = ((Utente)p).getDisponibilità(gp,inizio,fine,risorsa);
 		assertEquals("C'è la disponibilità",true,esito);
-	}
+	}*/
 	@Test
 	public void testUtentePrimaData () {
 		Persona p = new Utente("Davide", "Limardi", "das@gmail.com","pippo","ciao");

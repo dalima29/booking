@@ -30,7 +30,7 @@ public class GestionePrenotazioni {
 		}
 	}
 	
-	public boolean getDisponibilità(DateTime inizio, DateTime fine, Risorsa ris) {
+	private boolean getDisponibilità(DateTime inizio, DateTime fine, Risorsa ris) {
 		Interval intervallo = new Interval (inizio,fine);
 		List<Prenotazione> lista = this.mappa.get(ris);
 		for (Prenotazione p : lista) {
