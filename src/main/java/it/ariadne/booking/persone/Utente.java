@@ -25,8 +25,8 @@ public class Utente extends Persona{
 		return gp.removePrenotazione(nomeP, nome);
 	}
 
-	public DateTime primaData(GestionePrenotazioni gp, Risorsa ris, Period periodo, DateTime inizioRicerca) {
-		return gp.primaData(ris, periodo, inizioRicerca);
+	public DateTime primaData(GestionePrenotazioni gp, String tipoR, String nomeR, Period periodo, DateTime inizioRicerca) {
+		return gp.primaData(tipoR,nomeR, periodo, inizioRicerca);
 	}
 
 	public DateTime primaDataDisponibile(GestionePrenotazioni gp, String tipo, Period periodo, DateTime inizioDisp,

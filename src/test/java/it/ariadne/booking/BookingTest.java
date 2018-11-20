@@ -70,7 +70,7 @@ public class BookingTest {
 		gp.addPrenotazione("pippo", inizio, fine, ris,null);
 		Period periodo = new Period(3,0,0,0);
 		DateTime inizioRicerca = new DateTime(2018,12,25,9,0);
-		DateTime dataDisp = gp.primaData(ris, periodo, inizioRicerca);
+		DateTime dataDisp = gp.primaData(ris.getTipo(),ris.getNome(), periodo, inizioRicerca);
 		DateTime dataDaVer = new DateTime(2018,12,25,10,0);
 		//DateTime primaDataDisp = new DateTime
 		assertEquals("Prima data",dataDaVer,dataDisp);
@@ -241,10 +241,14 @@ public class BookingTest {
 		((Utente)p).addPrenotazione(gp,"pippo", inizio, fine, ris);
 		Period periodo = new Period(3,0,0,0);
 		DateTime inizioRicerca = new DateTime(2018,12,25,9,0);
-		DateTime dataDisp = ((Utente)p).primaData(gp,ris, periodo, inizioRicerca);
+		DateTime dataDisp = ((Utente)p).primaData(gp,ris.getTipo(),ris.getNome(), periodo, inizioRicerca);
 		DateTime dataDaVer = new DateTime(2018,12,25,10,0);
 		//DateTime primaDataDisp = new DateTime
 		assertEquals("Prima data",dataDaVer,dataDisp);
+		//risorsa che non è stata aggiunta;
+		Risorsa ris2 = new Aula("A5",100);
+		DateTime dataDisp2 = ((Utente)p).primaData(gp,ris2.getTipo(),ris2.getNome(), periodo, inizioRicerca);
+		assertEquals("Nessuna data",null,dataDisp2);
 		
 	}
 	@Test
@@ -387,6 +391,10 @@ public class BookingTest {
 		boolean verifica = true;
 		boolean esito = ((Amministratore)p2).aggiornaRisorsa(gp,nomeR,limiteDaModificare);
 		assertEquals("risorsa aggiornata positivamente",verifica,esito);
+		//risorsa non aggiunta
+		Risorsa risorsa = new Macchina("Toyota Yaris",5);
+		boolean esito2 = ((Amministratore)p2).aggiornaRisorsa(gp,risorsa.getNome(),limiteDaModificare);
+		assertEquals("risorsa non aggiornata(esito false",false,esito2);
 	}
 
 }

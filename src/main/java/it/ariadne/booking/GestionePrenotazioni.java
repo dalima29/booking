@@ -67,16 +67,23 @@ public class GestionePrenotazioni {
 		return false;
 	}
 	
-	public DateTime primaData(Risorsa ris, Period periodo, DateTime inizioRicerca) {
+	
+	public DateTime primaData(String tipoRis, String nomeRis, Period periodo, DateTime inizioRicerca) {
 		boolean dataDisp = false;
-		while(dataDisp == false) {
-			dataDisp = getDisponibilità(inizioRicerca, inizioRicerca.plus(periodo), ris);
-			if (dataDisp) {
-				DateTime dt = new DateTime(inizioRicerca);
-				return dt;
+		boolean esisteRisorsa = false;
+		do {
+			for(Map.Entry<Risorsa, List<Prenotazione>> entry: this.mappa.entrySet()) {
+				if(entry.getKey().getTipo().equals(tipoRis) && entry.getKey().getNome().equals(nomeRis)) {
+					esisteRisorsa=true;
+					dataDisp = getDisponibilità(inizioRicerca, inizioRicerca.plus(periodo), entry.getKey());
+					if(dataDisp) {
+						DateTime dt = new DateTime(inizioRicerca);
+						return dt;
+					}
+				}
 			}
 			inizioRicerca = inizioRicerca.plusHours(1);
-		}
+		} while(esisteRisorsa);
 		return null;
 	}
 
