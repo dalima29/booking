@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Aggiungi risorsa-Amministratore</title>
+    <title>Modifica risorsa-Amministratore</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -347,7 +347,7 @@
                                 <!-- /.col-lg-6 (nested) -->
                                 <div class="col-lg-6">
                                     <h1>Modifica</h1>
-                                    <form role="form">
+                                    <form role="form" action="risorse.html">
                                         <fieldset disabled>
                                             <div class="form-group">
                                                 <label for="disabledSelect">Tipo Risorsa</label>
@@ -362,12 +362,11 @@
                                         </fieldset>
                                         <div class="form-group">
                                             <label>Limite Risorsa</label>
-                                            <input class="form-control" placeholder="Inserisci numero">
+                                            <input class="form-control" placeholder="Inserisci numero" type="number" required>
                                         </div>                                       
-
+                                        <button type="submit" class="btn btn-primary">Modifica</button>
+                                        <button type="reset" class="btn btn-default">Annulla</button>
                                     </form>
-                                    <a href=risorse.html><button type="submit" class="btn btn-primary">Modifica</button></a>
-                                    <a href=risorse.html><button type="reset" class="btn btn-default">Annulla</button></a>
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
                             </div>
