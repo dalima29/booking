@@ -4,7 +4,7 @@ import it.ariadne.booking.Risorsa;
 
 public class Portatile implements Risorsa {
 
-	private int ram;
+	private int ram;//ram che possiede il portatile
 	private String nomePortatile;
 	
 	public Portatile(String nomePortatile,int ram) {

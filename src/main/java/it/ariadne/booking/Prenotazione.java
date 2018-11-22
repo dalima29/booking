@@ -6,9 +6,9 @@ import it.ariadne.booking.persone.Persona;
 
 public class Prenotazione {
 
-	private String nomeP;
-	private Interval intervallo;
-	private Persona p;
+	private String nomeP;//nome prenotazione
+	private Interval intervallo;//intervallo in cui si effettua la prenotazione
+	private Persona p;//utente che effettua la prenotazione
 	
 	public Prenotazione (String nomeP, Interval intervallo, Persona p) {
 		//aggiungere Persona

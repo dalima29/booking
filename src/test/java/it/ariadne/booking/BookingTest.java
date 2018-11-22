@@ -19,47 +19,61 @@ import it.ariadne.booking.risorse.Portatile;
 
 
 public class BookingTest {
-	
+	/**
+	 * Il test verifica i metodi per ottenere email e password di un utente
+	 */
 	@Test
-	public void testRichiede() {
-		GestionePrenotazioni gesP = new GestionePrenotazioni();
-		
-		Risorsa risorsa = new Macchina("Toyota Yaris",5);
-		DateTime inizio = new DateTime(2018, 12, 25,7, 0);
-		DateTime fine = new DateTime(2018, 12, 25, 9, 0);
-		DateTime inizio2 = new DateTime(2018,12,25,6,0);
-		DateTime fine2 = new DateTime(2018,12,25,10,0);
-		DateTime inizio3 = new DateTime(2018,12,25,10,0);
-		DateTime fine3 = new DateTime(2018,12,25,12,0);
-		
-		gesP.aggiungiRisorsa(risorsa);
-		boolean prenotazioneEffettuata = gesP.addPrenotazione("pippo",inizio,fine,risorsa,null);
-		
-		boolean disponibilità = gesP.getDisponibilità(inizio,fine,risorsa);
-		boolean disponibilità2 = gesP.getDisponibilità(inizio2, fine2,risorsa);
-		boolean disponibilità3 = gesP.getDisponibilità(inizio3, fine3,risorsa);
-		//ASSERT FIRST
-		assertEquals("La risorsa è disponibile in quella data", false, disponibilità);
-		//TRIANGULATE
-		assertEquals("La risorsa è disponibile in quella data", false, disponibilità2);
-		assertEquals("La risorsa è disponibile in quella data", true, disponibilità3);
-		
-		boolean prenotazioneEffettuata2 = gesP.addPrenotazione("pippo2",inizio2, fine2,risorsa,null);
-		//ASSERT FIRST
-		assertEquals("La prenotazione è stata aggiunta", true, prenotazioneEffettuata);
-		//TRIANGULATE
-		assertEquals("La prenotazione non è stata aggiunta, esito false", false, prenotazioneEffettuata2);
-		
-		boolean prenotazioneRimossa = gesP.removePrenotazione("pippo",risorsa.getNome());
-		boolean prenotazioneRimossa2 = gesP.removePrenotazione("pluto",risorsa.getNome());
-		
-		//ASSERT FIRST
-		assertEquals("La prenotazione è stata rimossa", true, prenotazioneRimossa);
-		//TRIANGULATE
-		assertEquals("La prenotazione non è stata rimossa, esito false", false, prenotazioneRimossa2);
-		
+	public void prendiEmailEpassword () {
+		Persona p = new Utente("Davide", "Limardi", "@gmail.com", "pippo", "123456");
+		String email = ((Utente)p).getEmail();
+		assertEquals("email è","@gmail.com",email);
+		String password = ((Utente)p).getPassword();
+		assertEquals("password è","123456",password);
 	}
 	
+	/**
+	 * Il test verifica il metodo per rimuovere una prenotazione, in questo caso si testa
+	 * l'esito false, ovvero la prenotazione non esiste
+	 */
+	@Test
+	public void rimuoviPrenotazione () {
+		GestionePrenotazioni gp = new GestionePrenotazioni();
+		Persona p = new Utente("Davide","Limardi" , "@gmail.com","pippo", "123456");
+		Risorsa ris = new Macchina("Toyota Yaris",5);
+		boolean esito = ((Utente)p).removePrenotazione(gp, "pluto", ris.getNome());
+		assertEquals("La prenotazione non è stata rimossa, esito false", false,esito);
+	}
+	
+	/**
+	 * Il test verifica il metodo per ottenere il limite di una risorsa
+	 */
+	@Test
+	public void ottieniLimite () {
+		Risorsa risorsa = new Aula("A5", 5);
+		int limite = risorsa.getLimite();
+		assertEquals("il limite è",5,limite);
+		Risorsa portatile = new Portatile("Lenovo", 4);
+		int limite2 = portatile.getLimite();
+		assertEquals("il limite è",4,limite2);
+	}
+	
+	/**
+	 * Il test verifica il metodo per cambiare il limite di una risorsa
+	 */
+	@Test
+	public void cambiaLimite () {
+		Risorsa macchina = new Macchina("Opel",5);
+		macchina.setLimite(4);
+		assertEquals("il limite è",4,macchina.getLimite());
+		Risorsa portatile = new Portatile("Lenovo", 4);
+		portatile.setLimite(8);
+		assertEquals("il limte è",8,portatile.getLimite());
+	}
+	
+	/*
+	 * Il test verifica il metodo per cercare la prima data
+	 * in cui una risorsa è disponibile
+	 */
 	@Test
 	public void testPrimaData () {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
@@ -70,14 +84,17 @@ public class BookingTest {
 		gp.addPrenotazione("pippo", inizio, fine, ris,null);
 		Period periodo = new Period(3,0,0,0);
 		DateTime inizioRicerca = new DateTime(2018,12,25,9,0);
-		DateTime dataDisp = gp.primaData(ris, periodo, inizioRicerca);
+		DateTime dataDisp = gp.primaData(ris.getTipo(),ris.getNome(), periodo, inizioRicerca);
 		DateTime dataDaVer = new DateTime(2018,12,25,10,0);
-		//DateTime primaDataDisp = new DateTime
 		assertEquals("Prima data",dataDaVer,dataDisp);
 	}
 	
+	/**
+	 * Il test verifica il metodo primaDataDisponibile che ritorna la prima data
+	 * in cui una risorsa è disponibile, il secondo test verifica invece il caso
+	 * in cui non ci sia una data che vada bene
+	 */
 	@Test
-	//Prima data disponibile
 	public void TestDisponibile () {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
 		Risorsa ris = new Macchina("Toyota Yaris",5);
@@ -99,6 +116,11 @@ public class BookingTest {
 		//TRIANGULATE
 		assertEquals("La prima data disponibile è null", null, secondaData);
 	}
+	
+	/**
+	 * Il test verifica la disponibilità di una risorsa che rispetta un certo
+	 * limite imposto dall'utente. Si sono testati i vari casi in cui ci può trovare
+	 */
 	@Test
 	public void TestDisponibileLimite () {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
@@ -129,6 +151,11 @@ public class BookingTest {
 		DateTime dataDispLimite3 = gp.primaDataDisponibileLimite(ris.getTipo(), periodo, inizioRicerca, 7);
 		assertEquals("Non esiste una risorsa che rispetti il limite, data null", null,dataDispLimite3);
 	}
+	
+	/**
+	 * Il test verifica il corretto funzionamento del metodo che ritorna
+	 * le prenotazioni per risorsa
+	 */
 	@Test
 	public void riepilogoPrenotazioniRisorse () {
 		Persona p = new Utente("Davide", "Limardi", "das@gmail.com","pluto","ciao");
@@ -144,6 +171,10 @@ public class BookingTest {
 				"\n";
 		assertEquals("Il riepilogo prenotazioni aula a5 è",verifica,riepilogo);
 	}
+	/**
+	 * Il test verifica il corretto funzionamento del metodo che ritorna le prenotazioni
+	 * correnti di un Utente
+	 */
 	@Test
 	public void riepilogoPrenotazioniUtenteNonPassate () {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
@@ -173,7 +204,10 @@ public class BookingTest {
 		assertEquals("Le mie prenotazioni sono ",stringaDaVerificare3,prenotazioni3);
 	}
 
-	
+	/**
+	 * Il test verifica il corretto funzionamento del metodo che ritorna le prenotazioni
+	 * per una determinata risorsa
+	 */
 	@Test
 	public void leggiRisorsa () {
 		Persona p = new Utente("Davide", "Limardi", "das@gmail.com","pluto","ciao");
@@ -219,17 +253,11 @@ public class BookingTest {
 		assertEquals("Prenotazione rimossa",true,esito2);
 	}
 	
-	@Test
-	public void testUtentePrendiDisponibilità() {
-		GestionePrenotazioni gp = new GestionePrenotazioni();
-		DateTime inizio = new DateTime(2018,12,25,7,0);
-		DateTime fine = new DateTime(2018, 12, 25, 9, 59);
-		Risorsa risorsa = new Aula("A5",100);
-		Persona p = new Utente("Davide", "Limardi", "das@gmail.com","pippo","ciao");
-		gp.aggiungiRisorsa(risorsa);
-		boolean esito = ((Utente)p).getDisponibilità(gp,inizio,fine,risorsa);
-		assertEquals("C'è la disponibilità",true,esito);
-	}
+	/**
+	 * Il test verifica il metodo che permette di trovare la prima data disponibile
+	 * per una risorsa, nel primo caso viene ritornata una data, nel secondo caso
+	 * viene ritornato null poichè la risorsa non è stata aggiunta
+	 */
 	@Test
 	public void testUtentePrimaData () {
 		Persona p = new Utente("Davide", "Limardi", "das@gmail.com","pippo","ciao");
@@ -241,12 +269,22 @@ public class BookingTest {
 		((Utente)p).addPrenotazione(gp,"pippo", inizio, fine, ris);
 		Period periodo = new Period(3,0,0,0);
 		DateTime inizioRicerca = new DateTime(2018,12,25,9,0);
-		DateTime dataDisp = ((Utente)p).primaData(gp,ris, periodo, inizioRicerca);
+		DateTime dataDisp = ((Utente)p).primaData(gp,ris.getTipo(),ris.getNome(), periodo, inizioRicerca);
 		DateTime dataDaVer = new DateTime(2018,12,25,10,0);
 		//DateTime primaDataDisp = new DateTime
 		assertEquals("Prima data",dataDaVer,dataDisp);
+		//risorsa che non è stata aggiunta;
+		Risorsa ris2 = new Aula("A5",100);
+		DateTime dataDisp2 = ((Utente)p).primaData(gp,ris2.getTipo(),ris2.getNome(), periodo, inizioRicerca);
+		assertEquals("Nessuna data",null,dataDisp2);
 		
 	}
+	
+	/**
+	 * Il test verifica la prima data disponibile per una certa risorsa. Nel primo
+	 * caso la data esiste, nel secondo no poichè supera la data che l'utente
+	 * ha inserito come fine ricerca
+	 */
 	@Test
 	public void testUtentePrimaDataDisponibile() {
 		Persona p = new Utente("Davide", "Limardi", "das@gmail.com","pippo","ciao");
@@ -270,6 +308,12 @@ public class BookingTest {
 		//TRIANGULATE
 		assertEquals("La prima data disponibile è null", null, secondaData);
 	}
+	
+	/**
+	 * Il test verifica la prima data disponibile per una risorsa che rispetti
+	 * il limite imposto dall'utente. Nei primi due casi si testa la condizione in cui
+	 * la risorsa esiste, nel secondo caso no
+	 */
 	@Test
 	public void testUtentePrimaDataDisponibileLimite() {
 		Persona p = new Utente("Davide", "Limardi", "das@gmail.com","pippo","ciao");
@@ -301,6 +345,12 @@ public class BookingTest {
 		DateTime dataDispLimite3 = ((Utente)p).primaDataDisponibileLimite(gp,ris.getTipo(), periodo, inizioRicerca, 7);
 		assertEquals("Non esiste una risorsa che rispetti il limite, data null", null,dataDispLimite3);
 	}
+	
+	/**
+	 * Il test verifica il metodo che permette all'amministratore di aggiungere
+	 * una risorsa, nel primo caso la risorsa viene aggiunta, nel secondo no
+	 * perchè esiste già
+	 */
 	@Test
 	public void testAggiungiRisorsaAmministratore() {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
@@ -312,6 +362,11 @@ public class BookingTest {
 		boolean esito2 = ((Amministratore)p).aggiungiRisorsa(gp,risorsa);
 		assertEquals("La risorsa non è stata aggiunta",false,esito2);
 	}
+	
+	/**
+	 * Il test verifica il metodo che torna, all'amministratore, le prenotazioni di una
+	 * determinata risorsa
+	 */
 	@Test
 	public void testLeggiRisorsaAmministratore() {
 		Persona p = new Utente("Davide", "Rossi", "das@gmail.com","pluto","ciao");
@@ -329,6 +384,11 @@ public class BookingTest {
 				"\n";
 		assertEquals("Informazioni sulla risorsa",verifica,riepilogo);
 	}
+	
+	/**
+	 * Test che verifica il corretto funzionamento del metodo che ritorna una stringa
+	 * con le prenotazioni per risorsa
+	 */
 	@Test
 	public void testAmministratoreRiepilogoPrenotazioniPerRisorsa() {
 		Persona p = new Utente("Davide", "Rossi", "das@gmail.com","pluto","ciao");
@@ -345,6 +405,13 @@ public class BookingTest {
 				"\n";
 		assertEquals("Il riepilogo prenotazioni aula a5 è",verifica,riepilogo);
 	}
+	
+	/**
+	 * Test che verifica il funzionamento del metodo che permette all'amministratore
+	 * di eliminare una risorsa. Prima viene testato il caso in cui la risorsa viene
+	 * eliminata positivamente, dopo vien testato il caso in cui la risorsa che si vuole
+	 * eliminare non c'è
+	 */
 	@Test
 	public void eliminaRisorsaAmministratore () {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
@@ -358,6 +425,10 @@ public class BookingTest {
 		assertEquals("Risorsa eliminata",false,esito2);
 	}
 	
+	/**
+	 * Test che verifica il corretto funzionamento del metodo che ritorna, 
+	 * all'amministratore, tutte le prenotazioni effettuate ordinate per persona
+	 */
 	@Test
 	public void testAmministratoreRiepilogoPrenotazioniPerPersona() {
 		Persona p = new Utente("Davide", "Rossi", "das@gmail.com","pluto","ciao");
@@ -376,6 +447,13 @@ public class BookingTest {
 				"\n";
 		assertEquals("Il riepilogo prenotazioni aula a5 è",verifica,riepilogo);
 	}
+	
+	/**
+	 * Il test verifica il corretto funzionamento del metodo che permette, 
+	 * all'amministatore, di aggiornare il limite di una risorsa. Nel primo
+	 * caso l'aggiornamento va a buon fine, nel secondo caso no perchè
+	 * si sta tentando di aggiornare una risorsa che non c'è
+	 */
 	@Test
 	public void aggiornaRisorsa() {
 		GestionePrenotazioni gp = new GestionePrenotazioni();
@@ -387,6 +465,9 @@ public class BookingTest {
 		boolean verifica = true;
 		boolean esito = ((Amministratore)p2).aggiornaRisorsa(gp,nomeR,limiteDaModificare);
 		assertEquals("risorsa aggiornata positivamente",verifica,esito);
+		//risorsa non aggiunta
+		Risorsa risorsa = new Macchina("Toyota Yaris",5);
+		boolean esito2 = ((Amministratore)p2).aggiornaRisorsa(gp,risorsa.getNome(),limiteDaModificare);
+		assertEquals("risorsa non aggiornata(esito false",false,esito2);
 	}
-
 }

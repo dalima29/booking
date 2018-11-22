@@ -26,10 +26,10 @@ public abstract class Persona {
 		return this.email;
 	}
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 }

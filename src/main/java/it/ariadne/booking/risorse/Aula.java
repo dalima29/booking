@@ -4,7 +4,7 @@ import it.ariadne.booking.Risorsa;
 
 public class Aula implements Risorsa{
 	
-	private int capienza;
+	private int capienza;//numero posti Aula
 	private String nomeAula;
 	
 	public Aula(String nomeAula,int capienza) {

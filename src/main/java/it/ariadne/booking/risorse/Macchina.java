@@ -4,7 +4,7 @@ import it.ariadne.booking.Risorsa;
 
 public class Macchina implements Risorsa {
 	
-	private int numeroPosti;
+	private int numeroPosti;//numero posti macchina
 	private String nomeMacchina;
 	
 	public Macchina (String nomeMacchina, int numeroPosti) {

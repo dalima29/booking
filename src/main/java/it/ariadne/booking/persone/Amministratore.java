@@ -28,14 +28,11 @@ public class Amministratore extends Persona{
 	}
 
 	public String riepilogoPpersona(GestionePrenotazioni gp, List<Persona> lista) {
-		// TODO Auto-generated method stub
+
 		return gp.riepilogoPpersona(lista);
 	}
 
 	public boolean aggiornaRisorsa(GestionePrenotazioni gp, String nomeR, int limiteDaModificare) {
 		return gp.aggiornaRisorsa(nomeR,limiteDaModificare);
 	}
-
-
-
 }
